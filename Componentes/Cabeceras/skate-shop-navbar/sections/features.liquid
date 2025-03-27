@@ -1,0 +1,77 @@
+<div class="features" data-section-id="{{ section.id }}" data-section-type="features">
+  <div class="page-width">
+    <div class="features__grid">
+      {% for block in section.blocks %}
+        <div class="features__item" {{ block.shopify_attributes }}>
+          {% if block.settings.icon != blank %}
+            <div class="features__icon">
+              <img 
+                src="{{ block.settings.icon | img_url: '100x' }}" 
+                alt="{{ block.settings.title }}"
+                width="48"
+                height="48"
+                loading="lazy">
+            </div>
+          {% endif %}
+          
+          {% if block.settings.title != blank %}
+            <h3 class="features__title">{{ block.settings.title }}</h3>
+          {% endif %}
+          
+          {% if block.settings.text != blank %}
+            <div class="features__text">{{ block.settings.text }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Características",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Característica",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icono"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Característica"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Descripción de la característica</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Características",
+      "blocks": [
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        },
+        {
+          "type": "feature"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

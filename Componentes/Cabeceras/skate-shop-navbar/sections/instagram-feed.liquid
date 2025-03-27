@@ -1,0 +1,92 @@
+<div class="instagram-feed" data-section-id="{{ section.id }}" data-section-type="instagram-feed">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="instagram-feed__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    <div class="instagram-feed__grid">
+      {% for block in section.blocks %}
+        <div class="instagram-feed__item" {{ block.shopify_attributes }}>
+          {% if block.settings.image != blank %}
+            <a href="{{ block.settings.link }}" class="instagram-feed__link" target="_blank" rel="noopener">
+              <img 
+                src="{{ block.settings.image | img_url: '600x' }}" 
+                alt="{{ block.settings.image.alt | escape }}"
+                class="instagram-feed__image"
+                loading="lazy">
+            </a>
+          {% else %}
+            <div class="instagram-feed__image instagram-feed__image--placeholder"></div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+    
+    {% if section.settings.username != blank %}
+      <div class="instagram-feed__username">
+        <a href="https://www.instagram.com/{{ section.settings.username }}" class="instagram-feed__username-link" target="_blank" rel="noopener">
+          @{{ section.settings.username }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Instagram",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Síguenos en Instagram"
+    },
+    {
+      "type": "text",
+      "id": "username",
+      "label": "Nombre de usuario",
+      "default": "granitoskateboarding"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_post",
+      "name": "Post de Instagram",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Imagen"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Enlace"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Instagram",
+      "blocks": [
+        {
+          "type": "instagram_post"
+        },
+        {
+          "type": "instagram_post"
+        },
+        {
+          "type": "instagram_post"
+        },
+        {
+          "type": "instagram_post"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

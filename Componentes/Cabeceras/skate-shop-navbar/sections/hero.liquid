@@ -1,0 +1,100 @@
+<div class="hero" data-section-id="{{ section.id }}" data-section-type="hero">
+  <div class="hero__image-wrapper">
+    {% if section.settings.image != blank %}
+      <img 
+        src="{{ section.settings.image | img_url: '2000x' }}" 
+        alt="{{ section.settings.image.alt | escape }}"
+        class="hero__image"
+        loading="eager">
+    {% else %}
+      <div class="hero__image hero__image--placeholder"></div>
+    {% endif %}
+    <div class="hero__overlay"></div>
+  </div>
+  
+  <div class="hero__content-wrapper page-width">
+    <div class="hero__content">
+      {% if section.settings.logo != blank %}
+        <img 
+          src="{{ section.settings.logo | img_url: 'master' }}" 
+          alt="{{ shop.name }}"
+          class="hero__logo"
+          width="{{ section.settings.logo_width }}"
+          loading="eager">
+      {% endif %}
+      
+      {% if section.settings.title != blank %}
+        <h1 class="hero__title">{{ section.settings.title }}</h1>
+      {% endif %}
+      
+      {% if section.settings.text != blank %}
+        <div class="hero__text">{{ section.settings.text }}</div>
+      {% endif %}
+      
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="hero__button">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Imagen de fondo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "label": "Ancho del logo",
+      "default": 300
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Bienvenidos a Granito Skateboarding"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Tu destino para todo lo relacionado con el skateboarding. Equipamiento de calidad, ropa y accesorios.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Ver Productos"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Enlace del botón",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero",
+      "category": "Imagen"
+    }
+  ]
+}
+{% endschema %}
+

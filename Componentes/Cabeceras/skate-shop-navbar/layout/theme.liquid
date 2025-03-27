@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="{{ shop.locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#c59d45">
+  <link rel="canonical" href="{{ canonical_url }}">
+  
+  <title>{{ page_title }}</title>
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+  
+  {{ content_for_header }}
+  
+  <!-- Estilos del tema -->
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+  
+  <!-- Scripts del tema -->
+  {{ 'theme.js' | asset_url | defer }}
+</head>
+
+<body>
+  {% section 'header' %}
+  
+  <main role="main" id="MainContent">
+    {{ content_for_layout }}
+  </main>
+  
+  {% section 'footer' %}
+</body>
+</html>
+

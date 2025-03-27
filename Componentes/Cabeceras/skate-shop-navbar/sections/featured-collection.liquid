@@ -1,0 +1,99 @@
+<div class="featured-collection" data-section-id="{{ section.id }}" data-section-type="featured-collection">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="featured-collection__title">{{ section.settings.title }}</h2>
+    {% endif %}
+    
+    {% if section.settings.collection != blank and section.settings.collection.products.size > 0 %}
+      <div class="featured-collection__grid">
+        {% assign products = section.settings.collection.products %}
+        {% for product in products limit: section.settings.products_to_show %}
+          <div class="featured-collection__product">
+            <a href="{{ product.url }}" class="featured-collection__product-link">
+              <div class="featured-collection__product-image-wrapper">
+                {% if product.featured_image != blank %}
+                  <img 
+                    src="{{ product.featured_image | img_url: '400x' }}" 
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="featured-collection__product-image"
+                    loading="lazy">
+                {% else %}
+                  <div class="featured-collection__product-image featured-collection__product-image--placeholder"></div>
+                {% endif %}
+              </div>
+              <div class="featured-collection__product-info">
+                <h3 class="featured-collection__product-title">{{ product.title }}</h3>
+                <p class="featured-collection__product-price">{{ product.price | money }}</p>
+              </div>
+            </a>
+            <form method="post" action="/cart/add" class="featured-collection__product-form">
+              <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+              <button type="submit" class="featured-collection__product-button">
+                {{ 'products.product.add_to_cart' | t }}
+              </button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+      
+      {% if section.settings.view_all %}
+        <div class="featured-collection__view-all">
+          <a href="{{ section.settings.collection.url }}" class="featured-collection__view-all-link">
+            {{ section.settings.view_all_text }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="featured-collection__empty">
+        <p>{{ 'collections.general.no_matches' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Colección destacada",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "Productos Destacados"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Colección"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "label": "Productos a mostrar",
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "view_all",
+      "label": "Mostrar botón 'Ver todos'",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "Texto del botón 'Ver todos'",
+      "default": "Ver Todos los Productos"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Colección destacada",
+      "category": "Colección"
+    }
+  ]
+}
+{% endschema %}
+

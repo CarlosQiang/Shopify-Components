@@ -1,0 +1,150 @@
+<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer">
+  <div class="page-width">
+    <div class="site-footer__content">
+      {% if section.blocks.size > 0 %}
+        <div class="site-footer__blocks">
+          {% for block in section.blocks %}
+            <div class="site-footer__block" {{ block.shopify_attributes }}>
+              {% case block.type %}
+                {% when 'text' %}
+                  <h3 class="site-footer__title">{{ block.settings.title }}</h3>
+                  <div class="site-footer__text">{{ block.settings.text }}</div>
+                
+                {% when 'links' %}
+                  <h3 class="site-footer__title">{{ block.settings.title }}</h3>
+                  {% if block.settings.menu != blank %}
+                    <ul class="site-footer__linklist">
+                      {% for link in block.settings.menu.links %}
+                        <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                
+                {% when 'newsletter' %}
+                  <h3 class="site-footer__title">{{ block.settings.title }}</h3>
+                  {% if block.settings.text != blank %}
+                    <div class="site-footer__newsletter-text">{{ block.settings.text }}</div>
+                  {% endif %}
+                  
+                  {% form 'customer', id: 'ContactFooter' %}
+                    {% if form.posted_successfully? %}
+                      <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+                    {% endif %}
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <div class="newsletter-form">
+                      <input type="email"
+                        name="contact[email]"
+                        id="Email"
+                        class="newsletter-form__input"
+                        value="{% if customer %}{{ customer.email }}{% endif %}"
+                        placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}"
+                        aria-required="true"
+                        required
+                        autocorrect="off"
+                        autocapitalize="off">
+                      <button type="submit" class="newsletter-form__button" name="commit">
+                        Suscribirse
+                      </button>
+                    </div>
+                  {% endform %}
+              {% endcase %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      <div class="site-footer__bottom">
+        <div class="site-footer__copyright">
+          <small>&copy; {{ 'now' | date: "%Y" }} {{ shop.name }}. {{ section.settings.copyright_text }}</small>
+        </div>
+        
+        {% if section.settings.payment_enable %}
+          <div class="site-footer__payment">
+            {% for type in shop.enabled_payment_types %}
+              {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pie de página",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Texto de copyright",
+      "default": "Todos los derechos reservados."
+    },
+    {
+      "type": "checkbox",
+      "id": "payment_enable",
+      "label": "Mostrar iconos de pago",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Texto",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Sobre nosotros"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Tu tienda de confianza para todo lo relacionado con el skateboarding desde 2010.</p>"
+        }
+      ]
+    },
+    {
+      "type": "links",
+      "name": "Enlaces",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Enlaces"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menú",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texto",
+          "default": "<p>Suscríbete para recibir las últimas novedades y ofertas exclusivas.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

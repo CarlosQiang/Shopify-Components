@@ -1,0 +1,80 @@
+<div class="newsletter" data-section-id="{{ section.id }}" data-section-type="newsletter" style="background-color: {{ section.settings.background_color }};">
+  <div class="page-width">
+    <div class="newsletter__content">
+      {% if section.settings.title != blank %}
+        <h2 class="newsletter__title">{{ section.settings.title }}</h2>
+      {% endif %}
+      
+      {% if section.settings.text != blank %}
+        <div class="newsletter__text">{{ section.settings.text }}</div>
+      {% endif %}
+      
+      {% form 'customer', id: 'ContactNewsletter' %}
+        {% if form.posted_successfully? %}
+          <p class="form-success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+        {% endif %}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="newsletter__form">
+          <input type="email"
+            name="contact[email]"
+            id="NewsletterEmail"
+            class="newsletter__input"
+            value="{% if customer %}{{ customer.email }}{% endif %}"
+            placeholder="{{ section.settings.placeholder }}"
+            aria-required="true"
+            required
+            autocorrect="off"
+            autocapitalize="off">
+          <button type="submit" class="newsletter__button" name="commit">
+            {{ section.settings.button_label }}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título",
+      "default": "¡Únete a nuestra comunidad!"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texto",
+      "default": "<p>Suscríbete para recibir las últimas novedades, ofertas exclusivas y contenido sobre skateboarding</p>"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder del email",
+      "default": "Tu email"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Texto del botón",
+      "default": "Suscribirse"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Color de fondo",
+      "default": "#c59d45"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter",
+      "category": "Promocional"
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,86 @@
+<div class="announcement-bar" data-section-id="{{ section.id }}" data-section-type="announcement-bar">
+  {% if section.settings.announcement_text != blank %}
+    <p class="announcement-bar__message">{{ section.settings.announcement_text }}</p>
+  {% endif %}
+</div>
+
+<header class="site-header" data-section-id="{{ section.id }}" data-section-type="header">
+  <div class="page-width">
+    <div class="site-header__wrapper">
+      <div class="site-header__logo-wrapper">
+        {% if section.settings.logo %}
+          <a href="/" class="site-header__logo">
+            <img 
+              src="{{ section.settings.logo | img_url: 'master' }}" 
+              alt="{{ shop.name }}"
+              width="{{ section.settings.logo_width }}"
+              loading="lazy">
+          </a>
+        {% else %}
+          <a href="/" class="site-header__logo site-header__logo-text">{{ shop.name }}</a>
+        {% endif %}
+      </div>
+      
+      <nav class="site-nav">
+        <ul class="site-nav__list">
+          {% for link in section.settings.menu.links %}
+            <li class="site-nav__item">
+              <a href="{{ link.url }}" class="site-nav__link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+      
+      <div class="site-header__icons">
+        <a href="/search" class="site-header__icon">
+          {% render 'icon-search' %}
+        </a>
+        <a href="/account" class="site-header__icon">
+          {% render 'icon-account' %}
+        </a>
+        <a href="/cart" class="site-header__icon site-header__cart">
+          {% render 'icon-cart' %}
+          <span class="cart-count" data-cart-count>
+            {{ cart.item_count }}
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Cabecera",
+  "settings": [
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "label": "Texto de anuncio",
+      "default": "Envío gratis en pedidos superiores a 50€"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Ancho del logo",
+      "default": 150
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú de navegación",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}
+
